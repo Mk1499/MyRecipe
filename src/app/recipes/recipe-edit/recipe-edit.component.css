@@ -1,0 +1,17 @@
+.ingRow{
+  margin-top:1vh
+}
+
+input.ng-touched.ng-invalid , textarea.ng-touched.ng-invalid{
+  border : 1px solid red;
+}
+
+.recImg{
+  width: 20vw;
+  border-radius: 10px;
+}
+
+.imgCont{
+  display: flex;
+  justify-content:center;
+}

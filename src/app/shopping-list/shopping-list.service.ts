@@ -11,25 +11,39 @@ export class ShoppingListService {
     new Ingredient('Bananna', 10)
   ];
 
-  changingIng = new EventEmitter<Ingredient[]>()
-
+  changingIng = new Subject<Ingredient[]>()
+  startedEditing = new Subject<number>();
 
   getIngredients(): Ingredient[] {
     return this.ingredients.slice();
   }
 
+  getOneIngredient(index: number): Ingredient {
+    return this.ingredients[index]
+  }
+
   addIngredient(ing: Ingredient) {
     this.ingredients.push(ing);
-    this.changingIng.emit(this.ingredients.slice());
+    this.changingIng.next(this.ingredients.slice());
     console.log("New List : ", this.ingredients);
   }
 
-  addIngredients(ings : Ingredient[]){
+  addIngredients(ings: Ingredient[]) {
     // for(let ing of ings ){
     //   this.addIngredient(ing);
     // }
     this.ingredients.push(...ings);
-    this.changingIng.emit(this.ingredients.slice());
+    this.changingIng.next(this.ingredients.slice());
+  }
+
+  updateIngriednts(index:number,newIng:Ingredient){
+    this.ingredients[index]= newIng;
+    this.changingIng.next(this.ingredients.slice());
+  }
+
+  deleteIngredient(index:number){
+    this.ingredients.splice(index,1);
+    this.changingIng.next(this.ingredients.slice());
   }
 
   constructor() { }

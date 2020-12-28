@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { ShoppingListService } from './../shopping-list/shopping-list.service';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
@@ -8,7 +9,9 @@ import { Recipe } from './recipes.model'
 })
 export class RecipeService {
 
-  recipeSelected = new EventEmitter<Recipe>();
+  recipeSelected = new Subject<Recipe>();
+  recipesChanged = new Subject<Recipe[]>();
+
 
   private recipes: Recipe[] = [
     new Recipe('Shawrma', 'this is recipe description', 'https://www.eatthis.com/wp-content/uploads/2019/10/pumpkin-pad-thai-recipe.jpg', [
@@ -36,6 +39,19 @@ export class RecipeService {
     this.slSerivce.addIngredients(ingredients);
   }
 
+  addRecipe(recipe:Recipe){
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
+  updateRecipe(index:number,recipe:Recipe){
+    this.recipes[index] = recipe ;
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  deleteRecipe(index:number){
+    this.recipes.splice(index,1);
+    this.recipesChanged.next(this.recipes.slice())
+  }
 
 }
