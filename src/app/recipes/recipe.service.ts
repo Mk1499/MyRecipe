@@ -1,3 +1,4 @@
+import { DataStorageService } from './../shared/data-storage.service';
 import { Subject } from 'rxjs';
 import { ShoppingListService } from './../shopping-list/shopping-list.service';
 import { EventEmitter, Injectable } from '@angular/core';
@@ -14,18 +15,24 @@ export class RecipeService {
 
 
   private recipes: Recipe[] = [
-    new Recipe('Shawrma', 'this is recipe description', 'https://www.eatthis.com/wp-content/uploads/2019/10/pumpkin-pad-thai-recipe.jpg', [
-      new Ingredient('Meat', 2),
-      new Ingredient('Fruit', 5)
-    ])
-    ,
-    new Recipe('Kebda', 'this is recipe description', 'https://www.trafalgar.com/real-word/wp-content/uploads/sites/3/2020/09/kebda-beef-liver-sandwich.jpeg', [
-      new Ingredient('French', 4),
-      new Ingredient('Chieken', 3),
+    // new Recipe('Shawrma', 'this is recipe description', 'https://www.eatthis.com/wp-content/uploads/2019/10/pumpkin-pad-thai-recipe.jpg', [
+    //   new Ingredient('Meat', 2),
+    //   new Ingredient('Fruit', 5)
+    // ])
+    // ,
+    // new Recipe('Kebda', 'this is recipe description', 'https://www.trafalgar.com/real-word/wp-content/uploads/sites/3/2020/09/kebda-beef-liver-sandwich.jpeg', [
+    //   new Ingredient('French', 4),
+    //   new Ingredient('Chieken', 3),
 
-    ])
+    // ])
   ];
   constructor(private slSerivce: ShoppingListService) { }
+
+  setRecipes(recipes: Recipe[]) {
+
+    this.recipes = recipes;
+    this.recipesChanged.next(recipes);
+  }
 
   getRecipes() {
     return this.recipes.slice();
@@ -39,18 +46,18 @@ export class RecipeService {
     this.slSerivce.addIngredients(ingredients);
   }
 
-  addRecipe(recipe:Recipe){
+  addRecipe(recipe: Recipe) {
     this.recipes.push(recipe);
     this.recipesChanged.next(this.recipes.slice());
   }
 
-  updateRecipe(index:number,recipe:Recipe){
-    this.recipes[index] = recipe ;
+  updateRecipe(index: number, recipe: Recipe) {
+    this.recipes[index] = recipe;
     this.recipesChanged.next(this.recipes.slice());
   }
 
-  deleteRecipe(index:number){
-    this.recipes.splice(index,1);
+  deleteRecipe(index: number) {
+    this.recipes.splice(index, 1);
     this.recipesChanged.next(this.recipes.slice())
   }
 
