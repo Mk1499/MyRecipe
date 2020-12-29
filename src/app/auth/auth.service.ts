@@ -3,7 +3,8 @@ import { User } from './user.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators'
-import { Subject, throwError, BehaviorSubject } from 'rxjs'
+import { Subject, throwError, BehaviorSubject } from 'rxjs';
+import {environment} from '../../environments/environment';
 
 
 export interface AuthResData {
@@ -21,7 +22,6 @@ export interface AuthResData {
 })
 export class AuthService {
 
-  apiKey: string = "AIzaSyBXlWW7pwfFTebpb-O_K3pnr9n7TdDFb10";
 
   user = new BehaviorSubject<User>(null);
   token: string = null;
@@ -33,7 +33,7 @@ export class AuthService {
   ) { }
 
   signUp(email: string, password: string) {
-    const url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + this.apiKey;
+    const url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + environment.firebaseApiKey;
     return this.http.post<AuthResData>(url, {
       email,
       password,
@@ -73,7 +73,7 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    const url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + this.apiKey;
+    const url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + environment.firebaseApiKey;
 
     return this.http.post<AuthResData>(url, {
       email,
